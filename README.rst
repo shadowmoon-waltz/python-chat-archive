@@ -1,6 +1,27 @@
 chat-archive: Easy to use offline chat archive
 ==============================================
 
+Fork of `project of same name`_. Changes will be described in this section;
+other sections are from original readme and may not reflect fork changes.
+
+The license is unchanged (MIT license).
+
+I patched a few small things for Windows support; there's no password storage
+support for Windows at the moment. That being said, for Hangouts, Hangups,
+which chat-archive uses to talk to Hangouts, stores a login token so acts like
+a device to Google, and it won't make you login too often. You can also omit
+the password or password name option in the configuration file, and you'll just
+have to enter your password occassionally. The information about login token
+applies to Windows and other operating systems.
+
+For Hangouts, I was having login issues with the automatic method Hangups uses
+to resolve login issues, so I enabled the manual login flag. When a login fails,
+it will instruct on how to log in through a browser and pull out an oauth cookie
+value to enable login.
+
+Original Project Summary
+------------------------
+
 The Python_ program `chat-archive` provides a local archive of chat messages
 that can be viewed and searched on the command line. Supported chat services
 include `Google Talk`_, `Google Hangouts`_, Slack_ and Telegram_. The program
@@ -465,6 +486,7 @@ of mine, all of them published under the same MIT license as the `chat-archive`
 program (assuming I keep this up-to-date as new dependencies are added).
 
 .. External references:
+.. _project of same name: https://github.com/xolox/python-chat-archive
 .. _Alembic: http://alembic.zzzcomputing.com/
 .. _changelog: https://chat-archive.readthedocs.io/en/latest/changelog.html
 .. _emoji: https://pypi.org/project/emoji/
