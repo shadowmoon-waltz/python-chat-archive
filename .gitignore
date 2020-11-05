@@ -1,0 +1,4 @@
+/build/
+chat_archive.egg-info
+__pycache__/
+dist
