@@ -16,7 +16,7 @@ import time
 # External dependencies.
 import hangups
 from hangups import Client
-from hangups.auth import RefreshTokenCache, get_auth
+from hangups.auth import CredentialsPrompt, RefreshTokenCache, get_auth
 from hangups.conversation_event import ChatMessageEvent
 from hangups.hangouts_pb2 import CONVERSATION_TYPE_GROUP
 from hangups.user import DEFAULT_NAME
@@ -77,6 +77,7 @@ class HangoutsBackend(ChatArchiveBackend):
                     config=self.config,
                 ),
                 RefreshTokenCache(self.cookie_file),
+                manual_login=True,
             )
         )
 
@@ -355,3 +356,6 @@ class GoogleAccountCredentials(PropertyManager):
         """Prompt the operator for a verification code."""
         logger.info("Please provide 2FA code to login to your Google account ..")
         return getpass.getpass("Verification code: ")
+
+    def get_authorization_code(self):
+        return CredentialsPrompt.get_authorization_code()
