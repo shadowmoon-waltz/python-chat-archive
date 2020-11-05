@@ -1,7 +1,7 @@
 # Easy to use offline chat archive.
 #
 # Author: Peter Odding <peter@peterodding.com>
-# Last Change: March 27, 2020
+# Last Change: November 4, 2020
 # URL: https://github.com/xolox/python-chat-archive
 
 """Utility functions for the `chat-archive` program."""
@@ -11,12 +11,18 @@ import datetime
 import getpass
 import logging
 import os
-import pwd
+try:
+    import pwd
+except:
+    pass
 import time
 
 # External dependencies.
 from humanfriendly import format
-from qpass import PasswordStore
+try:
+    from qpass import PasswordStore
+except:
+    pass
 
 # Initialize a logger for this module.
 logger = logging.getLogger(__name__)
@@ -40,9 +46,12 @@ def get_full_name():
               string when this information is not available.
     """
     try:
-        entry = pwd.getpwuid(os.getuid())
-        gecos = entry.pw_gecos.split(",")
-        return gecos[0]
+        if pwd:
+            entry = pwd.getpwuid(os.getuid())
+            gecos = entry.pw_gecos.split(",")
+            return gecos[0]
+        else:
+            return getpass.getuser()
     except Exception:
         return ""
 
@@ -84,6 +93,9 @@ def get_secret_from_store(name, directory=None):
     :raises: :exc:`exceptions.ValueError` when the given `name` doesn't match
              any entries or matches multiple entries in the password store.
     """
+    if not PasswordStore:
+        msg = "getting a password from a password store net yet implemented on windows"
+        raise NotImplementedError(msg)
     kw = dict(directory=directory) if directory else {}
     store = PasswordStore(**kw)
     matches = store.smart_search(name)

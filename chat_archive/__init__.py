@@ -1,7 +1,7 @@
 # Easy to use offline chat archive.
 #
 # Author: Peter Odding <peter@peterodding.com>
-# Last Change: March 27, 2020
+# Last Change: November 4, 2020
 # URL: https://github.com/xolox/python-chat-archive
 
 """Python API for the `chat-archive` program."""
@@ -100,7 +100,12 @@ class ChatArchive(SchemaManager):
 
         .. [[[end]]]
         """
-        return ConfigLoader(program_name="chat-archive")
+        config = ConfigLoader(program_name="chat-archive")
+        if os.name == "nt":
+            updir = os.environ.get("USERPROFILE")
+            if updir:
+                config.base_directories += (updir,)
+        return config
 
     @property
     def declarative_base(self):
